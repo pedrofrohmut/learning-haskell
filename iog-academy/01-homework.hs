@@ -10,12 +10,14 @@
 -- Question 2
 -- Define a function that takes a value and multiplies it by 3.
 
+tripleMe :: Float -> Float
 tripleMe x = x * 3
 
 
 -- Question 3
 -- Define a function that calculates the area of a circle.
 
+areaOfCircle :: Float -> Float
 areaOfCircle radius = pi * (radius ^ 2)
 
 
@@ -23,6 +25,7 @@ areaOfCircle radius = pi * (radius ^ 2)
 -- Define a function that calculates the volume of a cylinder by composing the
 -- previous function together with the height of the cylinder.
 
+volumeOfCylinder :: Float -> Float -> Float
 volumeOfCylinder radius height = (areaOfCircle radius) * height
 
 
@@ -30,4 +33,5 @@ volumeOfCylinder radius height = (areaOfCircle radius) * height
 -- Define a function that takes the height and radius of a cylinder and checks
 -- if the volume is greater than or equal to 42.
 
+isCylinderBig :: Float -> Float -> Float
 isCylinderBig radius height = (volumeOfCylinder radius height) >= 42
