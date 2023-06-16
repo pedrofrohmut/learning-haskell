@@ -175,25 +175,38 @@ filter'' f (x:xs)
     | otherwise =     filter' f xs
 
 
--- Foldr Pattern ---------------------------------------------------------------
--- foldr means fold right to left
+{-  Foldr Pattern --------------------------------------------------------------
+
+    foldr means fold right
+
+    The pattern is: foldr <operation> <identity_value> <list>
+
+    so using 'foldr (+) 0 [1,2,3,4]' is the same of 'sum [1,2,3,4]'
+    and 'foldr (*) 1 [1,2,3,4]' is the same of 'product [1,2,3,4]'
+-}
+
 
 foldr' :: (a -> b -> b) -> b -> [a] -> b
 foldr' func value []     = value -- base case
 foldr' func value (x:xs) = func x (foldr' func value xs) -- recursive case
 
-{-
-    so using 'foldr (+) 0 [1,2,3,4]' is the same of 'sum [1,2,3,4]'
-    and 'foldr (*) 1 [1,2,3,4]' is the same of 'product [1,2,3,4]'
--}
-
 -- Partially apply the foldr with the function and the base value
+
+-- mySum :: [Int] -> Int
+-- mySum [] = 0
+-- mySum (x:xs) = (+) x (mySum xs)
 sumFoldr :: [Int] -> Int
 sumFoldr = foldr (+) 0
 
+-- myProd :: [Int] -> Int
+-- myProd [] = 1
+-- myProd (head : rest) = (*) head (myProd rest)
 productFoldr :: [Int] -> Int
 productFoldr = foldr (*) 1
 
+-- and' :: [Bool] -> Bool
+-- and' []     = True
+-- and' (x:xs) = (&&) x (and' xs)
 andFoldr :: [Bool] -> Bool
 andFoldr = foldr (&&) True
 
@@ -202,4 +215,68 @@ andFoldr = foldr (&&) True
     length' :: [a] -> Int
     length' []     = 0
     length' (_:xs) = (+) 1 length' xs
+
+    length' :: [a] -> Int
+    length' []     = 0
+    length' (x:xs) = (\_ n -> 1 + n) x (length' xs)
+
+    length' :: [a] -> Int
+    length' = foldr (\_ n -> 1 + n) 0
+-}
+
+{- foldl -----------------------------------------------------------------------
+
+    Comparing foldr to foldl
+
+    -- In the recursive case you apply the function to head and then you have
+    the recursive call with the rest of the list
+
+    foldr :: (a -> b -> b) -> b -> b -> [a] -> b
+    foldr f v []     = v
+    foldr f v (x:xs) = f x (foldr f v xs)
+
+    -- In the foldl in the recursive case the recursive call with the function
+    comes at the beginning with a modified second parameter and modified list
+    -- The second parameter, '(f v x)', is usually called the accumulator
+
+    foldl :: (a -> b -> b) -> b -> b -> [a] -> b
+    foldl f v []     = v
+    foldl f v (x:xs) = foldl f (f v x) xs
+-}
+
+{-
+    reverse' :: [a] -> [a]
+    reverse' = foldr (\x xs -> xs ++ [x]) []
+
+    -- DOCS: http://learnyouahaskell.com/starting-out#an-intro-to-lists
+    "Watch out when repeatedly using the ++ operator on long strings. When you
+    put together two lists (even if you append a singleton list to a list, for
+    instance: [1,2,3] ++ [4]), internally, Haskell has to walk through the whole
+    list on the left side of ++"
+
+    (++) :: [a] -> [a] -> [a]
+    (++) [] ys = ys
+    (++) (x:xs) ys = x : xs ++ ys
+
+    -- With foldl
+    reverse' :: [a] -> [a]
+    reverse' = foldl (\x y -> y:x) []
+-}
+
+reverseFoldr :: [a] -> [a]
+reverseFoldr = foldr (\x xs -> xs ++ [x]) []
+
+reverseFoldl :: [a] -> [a]
+reverseFoldl = foldl (\x y -> y:x) []
+
+{-
+
+    In the case bellow the result is the same for foldr and foldl (with sum the
+    order does not matter)
+
+    foldr (+) 0 [1,2,3,4] == foldl (+) 0 [1,2,3,4] -- True
+
+    But for some cases the order matters (like in subtraction)
+
+    foldr (-) 0 [4,3,2,1] == foldl (-) 0 [1,2,3,4] -- False
 -}
