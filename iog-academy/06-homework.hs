@@ -171,6 +171,7 @@ q7_1 = printFactorial 1
 q7_2 = printFactorial 5
 q7_3 = printFactorial 10
 
+-- TODO: only 8
 -- Question 8
 -- Below you have defined some beer prices in bevogBeerPrices and your order list
 -- in orderList + the deliveryCost. Write a function that takes in an order and
