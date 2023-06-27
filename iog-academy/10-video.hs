@@ -301,6 +301,71 @@ instance (Ord a) => Ord (Box a) where
     Has _ `compare` Empty = GT
     Empty `compare` Empty = EQ
 
+{-------------------------------------------------------------------------------
+    Deriving
+
+    Using deriving you can get the instance of Type Class without manually
+    implementing instances of them
+
+    Deriving seems perfect, but. Not all type classes can be derived, and also,
+    deriving can go wrong.
+-}
+data Choice = No | Idk | Yes deriving (Eq, Ord, Show, Bounded, Enum)
+
+{-
+    Deriving going wrong
+
+    data PaymentMethod = Cash | Card | CC deriving (Eq, Ord)
+
+    in this case Cash < Card, Cash < CC and Card < CC the Ord deriving respects
+    the order that they are declared in the data structure definition
+
+    data Box a = Empty | Has a deriving (Eq, Ord)
+
+    ----------------------------------------------------------------------------
+
+    data Length = M Double | Km Double deriving (Eq)
+
+    M 1000 == Km 1 -- False
+
+    In this case the haskell compiler does a default implementation and the match
+    above does not work because the compiler has no way to know how to different
+    constructor relate to each other
+
+    Below is how the compiler will just implement when using deriving Eq
+
+    instance Eq Length where
+        (==) (M x) (M y)   = x == y
+        (==) (Km x) (Km y) = x == y
+        (==) _ _           = False
+-}
+data Length = M Double | Km Double
+
+-- Manually implementing the instance of Length for Eq
+instance Eq Length where
+    (==) (M x) (M y)   = x == y
+    (==) (Km x) (Km y) = x == y
+    (==) (M x) (Km y)  = x == (y * 1000)
+    (==) (Km x) (M y)  = (x * 1000) == y
+
+{-
+    Tips for real-world code:
+
+    - Everything explained here applies to all the type classes.
+
+    - We don't define type classes that often. Usually, the ones that comes
+    built-in with Haskell are all we need.
+
+    - We don't implement instances quite a lot. And usually just deriving is good
+    enough (all good to check and test for it). Derive first than just manually
+    define instance when they are needed.
+
+    - You can peek the minimum behaviors of a Type Class using :info in GHCI. When
+    defining an instance just implement the minimum.
+-}
+
+--------------------------------------------------------------------------------
+
 -- Assert Tests With it
 assert :: Bool -> Bool -> String -> String
 assert expr res id
@@ -344,13 +409,25 @@ main = do
 
     -- instances of Container for Present
     putStrLn $ assert (PresentFor "Tommy" 5 `contains` 5) True "Test19"
-    putStrLn $ "Test20 " ++ (show $ PresentFor "Tommy" 5 `replace` "Arduino")
+    putStrLn $ "Test20: " ++ (show $ PresentFor "Tommy" 5 `replace` "Arduino")
 
     -- Guess What's is inside Function
-    putStrLn $ "Test21 " ++ (guessWhatIsInside (PresentFor "Mary" "A Raspberry Pi") "A pony")
-    putStrLn $ "Test22 " ++ (guessWhatIsInside (Has 1) 15)
+    putStrLn $ "Test21: " ++ (guessWhatIsInside (PresentFor "Mary" "A Raspberry Pi") "A pony")
+    putStrLn $ "Test22: " ++ (guessWhatIsInside (Has 1) 15)
 
     -- Instance of Ord for (Box a)
     putStrLn $ assert (Has 9 >= Has 5) True "Test23"
     putStrLn $ assert ((Empty `compare` Has 0) == LT) True "Test24"
 
+    -- Deriving (Using compiler auto implementation of instances)
+    putStrLn $ assert (Yes /= No) True "Test24"
+    putStrLn $ assert (Yes > No) True "Test25"
+    putStrLn $ "Test26: " ++ (show Yes)
+    putStrLn $ "Test27: " ++ (show (minBound::Choice)) -- Minimum Value
+    putStrLn $ "Test28: " ++ (show $ succ Idk) -- Successor
+
+    -- Deriving Goes Wrong > Manually implementing instances to fix
+    putStrLn $ assert (M 1 == M 1) True "Test69"
+    putStrLn $ assert (Km 2 == Km 3) False "Test70"
+    putStrLn $ assert (Km 2 == M 3000) False "Test71"
+    putStrLn $ assert (M 2000 == Km 2) True "Test72"
