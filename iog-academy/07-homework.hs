@@ -1,4 +1,4 @@
--- TODO: All
+-- TODO: All of them
 
 -- Question 1
 -- Investigate the `Bounded` type class. What behaviours it provides?
