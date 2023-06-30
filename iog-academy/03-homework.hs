@@ -9,8 +9,8 @@
 isConsumptionAllowed :: Float -> Float -> Float -> String
 isConsumptionAllowed consumptionInKw dailyUseInHour monthLimit =
     if monthlyUsage >= monthLimit
-        then "It exceed the limit for this month"
-        else "The consumption is below the allowed amount"
+        then "You used: " ++ show monthlyUsage ++ ". It exceed the limit for this month"
+        else "The consumption of " ++ show monthlyUsage ++ " is below the allowed amount"
     where
         dailyUsage   = consumptionInKw * dailyUseInHour
         monthlyUsage = dailyUsage * 30
@@ -33,7 +33,6 @@ isConsumptionAllowed' hourlyConsuptionInKw dailyUseInHour monthAllowedKw =
         monthlyUsage = dailyUsage * 30
         excess       = monthlyUsage - monthAllowedKw
 
-
 -- Question 3
 -- Write a function that showcases the advantages of using let expressions to
 -- split a big expression into smaller ones. Then, share it with other students in Canvas.
@@ -48,20 +47,19 @@ isConsumptionAllowed' hourlyConsuptionInKw dailyUseInHour monthAllowedKw =
 division :: Float -> Float -> String
 division dividend divisor =
     if divisor == 0
-        then "Cannot devide by zero"
+        then
+            "Cannot devide by zero"
         else
-            let quotient = (dividend / divisor)
+            let
+                quotient = (dividend / divisor)
                 result   = floor quotient
-            in show result
-
+            in
+                show result
 
 division' :: Float -> Float -> String
 division' x y
-        | y == 0    = "Cannot devide by zero"
-        | otherwise = show result
-    where
-        result = x / y
-
+    | y == 0    = "Cannot devide by zero"
+    | otherwise = show $ x / y
 
 -- Question 5
 -- Write a function that takes in two numbers and calculates the sum of squares
@@ -76,3 +74,11 @@ myFunction x y =
         product  = x * y
         quotient = x / y
         result   = product^2 + quotient^2
+
+myFunction' :: Float -> Float -> Float
+myFunction' x y =
+    let
+        product = x * y
+        quotient = x / y
+    in
+        (product ^ 2) + (quotient ^ 2)
