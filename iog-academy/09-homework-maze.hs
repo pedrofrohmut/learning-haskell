@@ -26,12 +26,16 @@ It should look like this:
 
 *Main> solveMaze testMaze []
 "You're still inside the maze. Choose a path, brave adventurer: GoLeft, GoRight, or GoForward."
+
 *Main> solveMaze testMaze [GoLeft]
 "You've hit a wall!"
+
 *Main> solveMaze testMaze [GoForward]
 "You're still inside the maze. Choose a path, brave adventurer: GoLeft, GoRight, or GoForward."
+
 *Main> solveMaze testMaze [GoForward, GoRight]
 "You've hit a wall!"
+
 *Main> solveMaze testMaze [GoForward, GoLeft]
 "YOU'VE FOUND THE EXIT!!"
 
@@ -41,7 +45,8 @@ step-by-step just in case:
 1. Write two data types. One for the moves (Move) you can make, and another for the maze (Maze).
 (Use the example above to figure them out.)
 
-2. Write a function called "move" that takes a maze and a move and returns the maze after the move.
+2. Write a function called "move" that takes a maze and a move and returns the maze
+after the move.
 
 3. Write a "testMaze" value of type "Maze" and test the "move" function in GHCi.
 
@@ -55,3 +60,28 @@ still need to make another choice.
 
 6. Adapt adapt "solveMaze" function to use "showCurrentChoice" and play with your new game using GHCi! :D
 -}
+
+data Move = GoForward | GoLeft | GoRight deriving (Eq)
+
+type Maze = [Move]
+
+testMaze :: Maze
+testMaze = [GoForward, GoLeft]
+
+solveMaze :: Maze -> [Move] -> String
+solveMaze [] _ =
+    "YOU'VE FOUND THE EXIT!!"
+solveMaze _ [] =
+    "You're still inside the maze. Choose a path, brave adventurer: \
+   \ GoLeft, GoRight, or GoForward."
+solveMaze (x:xs) (y:ys) =
+    if x == y then solveMaze xs ys else "You've hit a wall!"
+
+main :: IO ()
+main = do
+    putStrLn $ solveMaze testMaze [] -- Still inside
+    putStrLn $ solveMaze testMaze [GoLeft] -- Hit wall
+    putStrLn $ solveMaze testMaze [GoForward] -- Still inside
+    putStrLn $ solveMaze testMaze [GoForward, GoRight] -- Hit wall
+    putStrLn $ solveMaze testMaze [GoForward, GoLeft] -- Found!
+    putStrLn $ solveMaze testMaze [GoForward, GoLeft, GoForward] -- Found!

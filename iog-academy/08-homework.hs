@@ -1,5 +1,3 @@
--- TODO: All of them
-
 -- This homework is around creating Haskell types that represent wines from over the world.
 
 -- Question 1
