@@ -112,7 +112,6 @@ printFactorial n
             | n <= 1 = "1"
             | otherwise = printFact (n - 1) ++ " * " ++ show n
 
--- TODO: only 8
 -- Question 8
 -- Below you have defined some beer prices in bevogBeerPrices and your order list
 -- in orderList + the deliveryCost. Write a function that takes in an order and
