@@ -226,8 +226,8 @@ fancyFunction x =
 {-
     The Constains Type Class
 
-    data Box a       = Empty          | Has a        deriving (Show)
-    data Present t a = EmptyPresent t | PresentFor a deriving (Show)
+    data Box a       = Empty          | Has a          deriving (Show)
+    data Present t a = EmptyPresent t | PresentFor t a deriving (Show)
 
     >:kind Box
     Box :: * -> *
