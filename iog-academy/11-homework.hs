@@ -4,6 +4,7 @@ import Data.List
 import System.CPUTime (getCPUTime)
 import System.Directory (doesFileExist, listDirectory)
 import Text.XHtml (thead)
+import System.IO
 
 {-
     We imported some functions that you'll need to complete the homework.
@@ -39,15 +40,28 @@ printNames paths = do
     xs <- paths
     mapM_ putStrLn xs
 
+doIt1 :: FilePath -> IO ()
+doIt1 path = do
+    let paths = listDirectory path
+    printAmount paths
+    printNames paths
+
 {-
--- Question 2 --
-Write an IO action that asks the user to type something, then writes the message
-to a file called msg.txt, and after that, it reads the text from the msg.txt
-file and prints it back. Use the writeFile and readFile functions.
+    -- Question 2 --
+    Write an IO action that asks the user to type something, then writes the message
+    to a file called msg.txt, and after that, it reads the text from the msg.txt
+    file and prints it back. Use the writeFile and readFile functions.
+    -- createMsg :: IO ()
 -}
 
--- createMsg :: IO ()
-
+doIt2 :: IO ()
+doIt2 = do
+    let fileName = "test.txt"
+    putStrLn "Type a message to be saved to a file"
+    input <- getLine
+    writeFile fileName input
+    contents <- readFile fileName
+    putStrLn $ "File contents: " ++ contents
 
 {-
 -- Context for Questions 3 and 4 --
