@@ -23,7 +23,7 @@ class Container container where
     replace :: container a -> b -> container b
     unwrap :: container a -> a
 
-data Box a = Empty | Has a
+data Box a = Empty | Has a deriving (Show)
 
 instance Container Box where
     isEmpty Empty = True
@@ -37,7 +37,7 @@ instance Container Box where
     unwrap (Has x) = x
     unwrap Empty = error "Cannot unwrap Empty"
 
-data Present tag a = EmptyPresent tag | PresentFor tag a
+data Present tag a = EmptyPresent tag | PresentFor tag a deriving (Show)
 
 instance Container (Present tag) where
     isEmpty (EmptyPresent _) = True
@@ -55,10 +55,10 @@ instance Container (Present tag) where
 
 data MailedBox tag details content
     = EmptyMailBox tag details
-    | MailBoxTo taga details content
+    | MailBoxTo tag details content
 
 instance Container (MailedBox tag details) where
-    isEmtpy (EmptyMailBox _ _) = True
+    isEmpty (EmptyMailBox _ _) = True
     isEmpty _ = False
 
     contains (EmptyMailBox _ _) _ = False

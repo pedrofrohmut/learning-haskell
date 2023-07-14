@@ -6,22 +6,38 @@ import System.Directory (doesFileExist, listDirectory)
 import Text.XHtml (thead)
 
 {-
-We imported some functions that you'll need to complete the homework.
-FilePath is just a synonym for String. Although, make sure to follow the standard path
-representation when using them (https://en.wikipedia.org/wiki/Path_(computing).
-getCPUTime    :: IO Integer
-doesFileExist :: FilePath -> IO Bool
-listDirectory :: FilePath -> IO [FilePath]
-You can hover over the functions to know what they do.
+    We imported some functions that you'll need to complete the homework.
+    FilePath is just a synonym for String. Although, make sure to follow the
+    standard path representation when using them
+    (https://en.wikipedia.org/wiki/Path_(computing).
+
+    getCPUTime    :: IO Integer
+    doesFileExist :: FilePath -> IO Bool
+    listDirectory :: FilePath -> IO [FilePath]
+    You can hover over the functions to know what they do.
 -}
 
 {-
--- Question 1 --
-Define an IO action that counts the number of files in the current directory
-and prints it to the terminal inside a string message.
+    -- Question 1 --
+    Define an IO action that counts the number of files in the current directory
+    and prints it to the terminal inside a string message.
 -}
 
--- listFiles :: IO ()
+path :: String
+path = "/home/user/test/"
+
+filesInDirectory :: IO [FilePath]
+filesInDirectory = listDirectory path
+
+printAmount :: IO [FilePath] -> IO ()
+printAmount paths = do
+    xs <- paths
+    putStrLn $ "You have " ++ (show $ length xs) ++ " in your current directory"
+
+printNames :: IO [FilePath] -> IO ()
+printNames paths = do
+    xs <- paths
+    mapM_ putStrLn xs
 
 {-
 -- Question 2 --
