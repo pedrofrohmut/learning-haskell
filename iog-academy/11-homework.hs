@@ -64,17 +64,20 @@ doIt2 = do
     putStrLn $ "File contents: " ++ contents
 
 {-
--- Context for Questions 3 and 4 --
-In cryptography, prime numbers (positive integers only divisible by themselves and 1) play a fundamental
-role in providing unbreakable mathematical structures. These structures, in turn, are leveraged to
-establish secure encryption.
-But, generating primes is a computational straining problem, as we will measure in the following exercise.
-This is because, to know whether a number is a prime number, you first need to know all the previous primes
-and then check that they are not a divisor of this number. So, this problem gets bigger and bigger!
-Our lead cryptographer provided us with 3 different algorithms (primes1, primes2, and primes3). All three
-correctly produce a list of all the prime numbers until a limit (that we provide as a parameter).
-Our job is not to understand these algorithms but to measure which is the fastest and print the largest
-prime number below our limit. Do it step by step, starting with question 3.
+    -- Context for Questions 3 and 4 --
+
+    In cryptography, prime numbers (positive integers only divisible by themselves
+    and 1) play a fundamental role in providing unbreakable mathematical structures.
+    These structures, in turn, are leveraged to establish secure encryption. But,
+    generating primes is a computational straining problem, as we will measure in
+    the following exercise. This is because, to know whether a number is a prime
+    number, you first need to know all the previous primes and then check that
+    they are not a divisor of this number. So, this problem gets bigger and bigger!
+    Our lead cryptographer provided us with 3 different algorithms (primes1, primes2,
+    and primes3). All three correctly produce a list of all the prime numbers
+    until a limit (that we provide as a parameter). Our job is not to understand
+    these algorithms but to measure which is the fastest and print the largest
+    prime number below our limit. Do it step by step, starting with question 3.
 -}
 
 primes1 :: Integer -> [Integer]
@@ -104,15 +107,55 @@ The CPU time here is given in picoseconds (which is 1/1000000000000th of a secon
 
 -- timeIO :: IO a -> IO ()
 
+timeIt :: IO a -> IO ()
+timeIt action = do
+    start <- getCPUTime
+    result <- action -- Performs the IO Action passed
+    end <- getCPUTime
+    let timeToCompute = end - start
+    putStrLn $ "Time to compute: " ++ (show timeToCompute)
 
 {-
--- Question 4 --
-Write an action that retrieves a value from the standard input, parses it as an integer,
-and compares the time all three algorithms take to produce the largest prime before the
-limit. Print the number and time to the standard output.
+  -- Question 4 --
+  Write an action that retrieves a value from the standard input, parses it as an
+  integer, and compares the time all three algorithms take to produce the largest
+  prime before the limit. Print the number and time to the standard output.
 -}
 
 -- benchmark :: IO ()
+
+time1 :: Integer -> IO ()
+time1 n = do
+    start <- getCPUTime
+    let result = primes1 n
+    end <- getCPUTime
+    putStrLn $ "Time to perform primes1: " ++ (show $ end - start)
+    putStrLn $ "Result 1: " ++ (show result) ++ "\n"
+
+time2 :: Integer -> IO ()
+time2 n = do
+    start <- getCPUTime
+    let result = primes2 n
+    end <- getCPUTime
+    putStrLn $ "Time to perform primes2: " ++ (show $ end - start)
+    putStrLn $ "Result 2: " ++ (show result) ++ "\n"
+
+time3 :: Integer -> IO ()
+time3 n = do
+    start <- getCPUTime
+    let result = primes3 n
+    end <- getCPUTime
+    putStrLn $ "Time to perform primes3: " ++ (show $ end - start)
+    putStrLn $ "Result 3: " ++ (show result) ++ "\n"
+
+doIt4 :: IO ()
+doIt4 = do
+    putStrLn "Insert a number to check if its prime:"
+    input <- getLine
+    let n = (read input)::Integer
+    time1 n
+    time2 n
+    time3 n
 
 {-
  -- Question 5 -- EXTRA CREDITS -- (In case the previous ones were too easy)
