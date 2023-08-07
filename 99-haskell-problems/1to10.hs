@@ -31,6 +31,8 @@ myReverse list =
     in  reverseIt [] list
 
 -- 06 Find out whether a list is a palindrome
+isPolindrome :: Eq a => [a] -> Bool
+isPolindrome list = list == (reverse list)
 
 -- 07 Flatten a nested list structure
 
