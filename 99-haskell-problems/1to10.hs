@@ -24,6 +24,11 @@ myLength list =
     in  count list 0
 
 -- 05 Reverse a list
+myReverse :: [a] -> [a]
+myReverse list =
+    let reverseIt result [] = result
+        reverseIt result (x:xs) = reverseIt (x : result) xs
+    in  reverseIt [] list
 
 -- 06 Find out whether a list is a palindrome
 
