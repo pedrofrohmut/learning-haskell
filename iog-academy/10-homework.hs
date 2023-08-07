@@ -1,4 +1,4 @@
--- TODO: All of them
+-- TODO: 2 and 3
 
 {-
 -- Question 1 --
