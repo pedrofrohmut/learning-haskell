@@ -35,20 +35,29 @@ isPolindrome :: Eq a => [a] -> Bool
 isPolindrome list = list == (reverse list)
 
 -- 07 Flatten a nested list structure
--- λ> flatten (Elem 5)
+-- $> myFlatten (Elem 5)
 -- [5]
--- λ> flatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
+-- $> myFlatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
 -- [1,2,3,4,5]
--- λ> flatten (List [])
+-- $> myFlatten (List [])
 -- []
 data NestedList a = Elem a | List [NestedList a] deriving Show
 
-flatten :: NestedList a -> [a]
-flatten (Elem x) = [x]
-flatten (List []) = []
-flatten (List (x:xs)) = flatten x ++ flatten (List xs)
+myFlatten :: NestedList a -> [a]
+myFlatten (Elem x) = [x]
+myFlatten (List []) = []
+myFlatten (List (x:xs)) = myFlatten x ++ myFlatten (List xs)
 
 -- 08 Eliminate consecutive duplicates of list elements
+-- $> myComp "111222344456667"
+-- "1234567"
+myComp :: Eq a => [a] -> [a]
+myComp (x:xs) =
+    let comp res curr (y:ys)
+            | null ys = if y == curr then res else res ++ [y]
+            | y == curr = comp res curr ys
+            | otherwise = comp (res ++ [y]) y ys
+    in  comp [x] x xs
 
 -- 09 Pack consecutive duplicates of list elements into sublists
 
