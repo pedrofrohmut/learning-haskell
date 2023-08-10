@@ -85,3 +85,18 @@ myPack (x:xs) =
         pack [x] x xs
 
 -- 10 Run-length encoding of a list
+-- * (encode '(a a a a b c c a a d e e e e))
+-- ((4 A) (1 B) (2 C) (2 A) (1 D)(4 E))
+
+myEncode :: Eq a => [a] -> [(Int, a)]
+myEncode (x:xs) =
+    let
+        encode :: Eq b => (Int, b) -> b -> [b] -> [(Int, b)]
+        encode tmp curr (y:ys)
+            | null ys && y == curr = [((fst tmp) + 1, y)]
+            | null ys && y /= curr = [tmp, (1, y)]
+            | y == curr            = encode ((fst tmp) + 1, y) curr ys
+            | y /= curr            = tmp : encode (1, y) y ys
+    in
+        encode (1, x) x xs
+
