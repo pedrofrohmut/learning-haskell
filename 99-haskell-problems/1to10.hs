@@ -91,12 +91,18 @@ myPack (x:xs) =
 myEncode :: Eq a => [a] -> [(Int, a)]
 myEncode (x:xs) =
     let
-        encode :: Eq b => (Int, b) -> b -> [b] -> [(Int, b)]
+        incTuple :: (Int, a) -> (Int, a)
+        incTuple (x, y) = (x + 1, y)
+
+        newTuple :: a -> (Int, a)
+        newTuple x = (1, x)
+
+        encode :: Eq a => (Int, a) -> a -> [a] -> [(Int, a)]
         encode tmp curr (y:ys)
-            | null ys && y == curr = [((fst tmp) + 1, y)]
+            | null ys && y == curr = [incTuple tmp]
             | null ys && y /= curr = [tmp, (1, y)]
-            | y == curr            = encode ((fst tmp) + 1, y) curr ys
-            | y /= curr            = tmp : encode (1, y) y ys
+            | y == curr            = encode (incTuple tmp) curr ys
+            | y /= curr            = tmp : encode (newTuple y) y ys
     in
-        encode (1, x) x xs
+        encode (newTuple x) x xs
 
