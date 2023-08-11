@@ -1,3 +1,5 @@
+data Amt a = Multiple a | Single deriving Show
+
 {-
     Problem 11
 
@@ -18,28 +20,39 @@
     [Multiple 4 'a',Single 'b',Multiple 2 'c',
      Multiple 2 'a',Single 'd',Multiple 4 'e']
 
+    Prob 10 example:
+    λ> encode "aaaabccaadeeee"
+    [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
 -}
 
-data Amt a = Multiple a | Single deriving Show
-
-myModifiedEncoding :: Eq a => [a] -> [(Amt Int, a)]
-myModifiedEncoding (x:xs) =
+myEncode :: Eq a => [a] -> [(Int, a)]
+myEncode (x:xs) =
     let
-        newTup :: a -> (Amt Int, a)
-        newTup x = (Single, x)
+        incTuple :: (Int, a) -> (Int, a)
+        incTuple (x, y) = (x + 1, y)
 
-        incTup :: (Amt Int, a) -> (Amt Int, a)
-        incTup (Single, x)     = (Multiple 2, x)
-        incTup (Multiple n, x) = (Multiple (n + 1), x)
+        newTuple :: a -> (Int, a)
+        newTuple x = (1, x)
 
-        encod :: Eq a => (Amt Int, a) -> a -> [a] -> [(Amt Int, a)]
-        encod tup curr (y:ys)
-            | null ys && y == curr = [(incTup tup)]
-            | null ys && y /= curr = [tup, (newTup y)]
-            | y == curr = encod (incTup tup) curr ys
-            | y /= curr = tup : encod (newTup y) y ys
+        encode :: Eq a => (Int, a) -> a -> [a] -> [(Int, a)]
+        encode tmp curr (y:ys)
+            | null ys && y == curr = [incTuple tmp]
+            | null ys && y /= curr = [tmp, (1, y)]
+            | y == curr            = encode (incTuple tmp) curr ys
+            | y /= curr            = tmp : encode (newTuple y) y ys
     in
-        encod (newTup x) x xs
+        encode (newTuple x) x xs
+
+myEncodeModified :: Eq a => [a] -> [(Amt Int, a)]
+myEncodeModified list =
+    let
+        modify :: (Int, a) -> (Amt Int, a)
+        modify (1, x) = (Single, x)
+        modify (n, x) = (Multiple n, x)
+
+        encoded = myEncode list
+    in
+        map modify encoded
 
 {-
     Problem 12
@@ -59,14 +72,8 @@ myModifiedEncoding (x:xs) =
 -}
 
 prob12_1 :: [(Amt Int, Char)]
-prob12_1 =
-    [ (Multiple 4, 'a')
-    , (Single, 'b')
-    , (Multiple 2, 'c')
-    , (Multiple 2, 'a')
-    , (Single, 'd')
-    , (Multiple 4, 'e')
-    ]
+prob12_1 = [ (Multiple 4, 'a') , (Single, 'b') , (Multiple 2, 'c') ,
+             (Multiple 2, 'a') , (Single, 'd') , (Multiple 4, 'e') ]
 
 myDecodeModified :: [(Amt Int, a)] -> [a]
 myDecodeModified list =
@@ -103,6 +110,25 @@ myDecodeModified list =
     [Multiple 4 'a',Single 'b',Multiple 2 'c',
      Multiple 2 'a',Single 'd',Multiple 4 'e']
 -}
+
+myEncodeDirect :: Eq a => [a] -> [(Amt Int, a)]
+myEncodeDirect (x:xs) =
+    let
+        newTup :: a -> (Amt Int, a)
+        newTup x = (Single, x)
+
+        incTup :: (Amt Int, a) -> (Amt Int, a)
+        incTup (Single, x)     = (Multiple 2, x)
+        incTup (Multiple n, x) = (Multiple (n + 1), x)
+
+        encod :: Eq a => (Amt Int, a) -> a -> [a] -> [(Amt Int, a)]
+        encod tup curr (y:ys)
+            | null ys && y == curr = [(incTup tup)]
+            | null ys && y /= curr = [tup, (newTup y)]
+            | y == curr = encod (incTup tup) curr ys
+            | y /= curr = tup : encod (newTup y) y ys
+    in
+        encod (newTup x) x xs
 
 {-
     Problem 14
