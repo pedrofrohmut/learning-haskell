@@ -193,6 +193,18 @@ myReplicate (x:xs) n =
     "abdeghk"
 -}
 
+myDropEvery :: [a] -> Int -> [a]
+myDropEvery [] _ = []
+myDropEvery list n =
+    let
+        drop :: Int -> Int -> [a] -> [a]
+        drop _ _ [] = []
+        drop i n (y:ys)
+            | i `mod` n == 0 = drop (i + 1) n ys
+            | otherwise = y : drop (i + 1) n ys
+    in
+        drop 1 n list
+
 {-
     Problem 17
 
