@@ -58,6 +58,30 @@ myModifiedEncoding (x:xs) =
 
 -}
 
+prob12_1 :: [(Amt Int, Char)]
+prob12_1 =
+    [ (Multiple 4, 'a')
+    , (Single, 'b')
+    , (Multiple 2, 'c')
+    , (Multiple 2, 'a')
+    , (Single, 'd')
+    , (Multiple 4, 'e')
+    ]
+
+myDecodeModified :: [(Amt Int, a)] -> [a]
+myDecodeModified list =
+    let
+        decodeTup :: (Amt Int, a) -> [a]
+        decodeTup (Single, x)     = x : []
+        decodeTup (Multiple 2, x) = x : decodeTup (Single, x)
+        decodeTup (Multiple n, x) = x : decodeTup (Multiple (n - 1), x)
+
+        decode :: [(Amt Int, a)] -> [a]
+        decode []     = []
+        decode (y:ys) = (decodeTup y) ++ decode ys
+    in
+        decode list
+
 {-
     Problem 13
 
