@@ -166,6 +166,17 @@ myDuplicateElements (x:xs) = x : x : myDuplicateElements xs
     "aaabbbccc"
 -}
 
+myReplicate :: [a] -> Int -> [a]
+myReplicate [] _ = []
+myReplicate (x:xs) n =
+    let
+        sublist :: a -> Int -> [a]
+        sublist val n
+            | n == 0 = []
+            | otherwise = val : sublist val (n - 1)
+    in
+        (sublist x n) ++ myReplicate xs n
+
 {-
     Problem 16
 
