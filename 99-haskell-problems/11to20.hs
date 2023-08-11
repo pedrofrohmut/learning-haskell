@@ -146,6 +146,10 @@ myEncodeDirect (x:xs) =
     [1,1,2,2,3,3]
 -}
 
+myDuplicateElements :: [a] -> [a]
+myDuplicateElements [] = []
+myDuplicateElements (x:xs) = x : x : myDuplicateElements xs
+
 {-
     Problem 15
 
