@@ -253,6 +253,17 @@ mySplit list amt =
     "cdefg"
 -}
 
+mySlice :: [a] -> Int -> Int -> [a]
+mySlice list start end =
+    let
+        helper :: [a] -> Int -> Int -> Int -> [a]
+        helper (y:ys) start end n
+            | n > end = []
+            | n >= start = y : helper ys start end (n + 1)
+            | otherwise = helper ys start end (n + 1)
+    in
+        helper list start end 1
+
 {-
     Problem 19
 
