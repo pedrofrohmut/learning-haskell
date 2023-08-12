@@ -288,6 +288,16 @@ mySlice list start end =
     "ghabcdef"
 -}
 
+myRotate :: [a] -> Int -> [a]
+myRotate list amt =
+    let
+        helper :: [a] -> [a] -> Int -> [a]
+        helper tmp (y:ys) n
+            | n == 0 = (y:ys) ++ tmp
+            | otherwise = helper (tmp ++ [y]) ys (n - 1)
+    in
+        helper [] list amt
+
 {-
     Problem 20
 
