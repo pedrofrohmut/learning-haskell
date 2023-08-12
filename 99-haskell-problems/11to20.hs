@@ -223,6 +223,16 @@ myDropEvery list n =
     ("abc", "defghik")
 -}
 
+mySplit :: [a] -> Int -> ([a], [a])
+mySplit list amt =
+    let
+        helper :: ([a], [a]) -> [a] -> Int -> ([a], [a])
+        helper (lft, rgt) (y:ys) n
+            | n > 0     = helper (lft ++ [y], rgt) ys (n - 1)
+            | otherwise = (lft, (y:ys))
+    in
+        helper ([], []) list amt
+
 {-
     Problem 18
 
