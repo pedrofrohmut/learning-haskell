@@ -322,3 +322,17 @@ myRotate list amt =
     λ> removeAt 2 "abcd"
     ('b',"acd")
 -}
+
+myRemoveAtSimple :: Int -> [a] -> [a]
+myRemoveAtSimple 1 (x:xs) = xs
+myRemoveAtSimple index (x:xs) = x : myRemoveAtSimple (index - 1) xs
+
+myRemoveAt :: [a] -> Int -> (a, [a])
+myRemoveAt list index =
+    let
+        helper (removed, residue) [] _ = (removed, residue)
+        helper (removed, residue) (y:ys) i
+            | i == 1    = helper (y, residue) ys (i - 1)
+            | otherwise = helper (removed, residue ++ [y]) ys (i - 1)
+    in
+        helper ((head list), []) list index
