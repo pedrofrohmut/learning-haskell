@@ -14,6 +14,17 @@
     "aXbcd"
 -}
 
+insertAt :: a -> [a] -> Int -> [a]
+insertAt value list index =
+    let
+        helper :: a -> Int -> [a] -> Int -> [a]
+        helper _ _ [] _ = []
+        helper val idx (y:ys) i
+            | i == idx  = val : y : helper val idx ys (i + 1)
+            | otherwise = y : helper val idx ys (i + 1)
+    in
+        helper value index list 1
+
 {-
     Problem 22
 
