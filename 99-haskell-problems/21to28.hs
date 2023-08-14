@@ -54,7 +54,7 @@ myRange start end =
 {-
     Problem 23
 
-    Extract a given number of randomly selected elements from a list. Solutions
+    Extract a given number of randomly selected elements from a list.
 
     Example:
 
