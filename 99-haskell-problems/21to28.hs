@@ -41,6 +41,16 @@ insertAt value list index =
     [4,5,6,7,8,9]
 -}
 
+myRange :: Int -> Int -> [Int]
+myRange start end =
+    let
+        helper :: Int -> Int -> Int -> [Int]
+        helper first last i
+            | i == last = [last]
+            | otherwise = i : helper first last (i + 1)
+    in
+        helper start end start
+
 {-
     Problem 23
 
