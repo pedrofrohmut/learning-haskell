@@ -147,6 +147,29 @@ myDiffSelect amount limit =
     "badcef"
 -}
 
+myGenRndPermutation :: [a] -> [a]
+myGenRndPermutation xs =
+    let
+        removeAt :: [a] -> Int -> (a, [a])
+        removeAt list pos =
+            let
+                helper (val, rest) (y:ys) n i
+                    | i == n = (y, rest ++ ys)
+                    | otherwise = helper (val, rest ++ [y]) ys n (i + 1)
+            in
+                helper ((head list), []) list pos 0
+
+        helper :: [a] -> [a] -> StdGen -> [a]
+        helper res [] _ = res
+        helper res ys gen =
+            let
+                (rndPos, newGen) = randomR (0, (length ys) - 1) gen
+                (removed, rest) = removeAt ys rndPos
+            in
+                helper (removed : res) rest newGen
+    in
+        helper [] xs (mkStdGen 1)
+
 {-
     Problem 26
 
