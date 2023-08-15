@@ -118,6 +118,19 @@ myRndSelected list amount =
     [23,1,17,33,21,37]
 -}
 
+myDiffSelect :: Int -> Int -> [Int]
+myDiffSelect amount limit =
+    let
+        helper :: Int -> Int -> StdGen -> [Int]
+        helper 0 _ _ = []
+        helper n m gen =
+            let
+                (val, newGen) = randomR (1, m) gen
+            in
+                val : helper (n - 1) m newGen
+    in
+        helper amount limit (mkStdGen 1)
+
 {-
     Problem 25
 
