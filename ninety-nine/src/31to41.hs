@@ -21,6 +21,23 @@
     True
 -}
 
+isPrime :: Int -> Bool
+isPrime n =
+    let
+        helper :: Int -> Int -> Bool
+        helper num i
+            | isDivisible = False
+            | i > halfN = True
+            | otherwise = helper num (i + 1)
+            where
+                isDivisible = num `mod` i == 0
+                halfN = num `div` i
+    in
+        helper n 2
+
+-- Primes between 1 and 100:
+-- ghci> filter isPrime [0..100]
+
 {-
    Problem 32
 
