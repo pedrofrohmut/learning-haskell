@@ -193,6 +193,36 @@ myGenRndPermutation xs =
 -}
 
 {-
+    Smaller for testing
+
+    myCombinations 3 "abc" => ["abc", "acb", "bac", "bca", "cab", "cba"]
+
+    make triple loop i, j, k
+-}
+
+myCombinations :: Int -> [a] -> [[a]]
+myCombinations size group =
+    let
+        -- makeLists [] = []
+        -- makeLists (x:xs) = [x] : makeLists xs
+
+        -- makeList2 :: [[a]] -> [a] -> [a] -> [a] -> [[a]]
+
+        -- when ys isEmpty all the possible groups were created
+        makeList2 res full [] ys = res
+        -- when xs is empty go to next on ys
+        makeList2 res full (x:xs) [] = makeList2 res full xs full
+        -- otherwise: make groups and next on xs
+        makeList2 res full (x:xs) (y:ys) =
+            let
+                updtRes = res ++ [x:y:[]]
+            in
+                makeList2 updtRes full (x:xs) ys
+
+    in
+        makeList2 [] group group group
+
+{-
     Problem 27
     Group the elements of a set into disjoint subsets.
 
