@@ -24,16 +24,16 @@
 isPrime :: Int -> Bool
 isPrime n =
     let
-        helper :: Int -> Int -> Bool
-        helper num i
+        isPrime' :: Int -> Int -> Bool
+        isPrime' num i
             | isDivisible = False
             | i > halfN = True
-            | otherwise = helper num (i + 1)
+            | otherwise = isPrime' num (i + 1)
             where
                 isDivisible = num `mod` i == 0
                 halfN = num `div` i
     in
-        helper n 2
+        isPrime' n 2
 
 -- Primes between 1 and 100:
 -- ghci> filter isPrime [0..100]
@@ -56,6 +56,34 @@ isPrime n =
    [9,3,3]
 -}
 
+myGCD :: Int -> Int -> Int
+myGCD val1 val2 =
+    let
+        x = modulus val1
+        y = modulus val2
+
+        -- The same as the main func but the args are always positive
+        myGCD' :: Int -> Int -> Int
+        myGCD' a b
+            | mod a b == 0 = b
+            | mod b a == 0 = a
+            | otherwise = helper a b 1 2
+
+        helper :: Int -> Int -> Int -> Int -> Int
+        helper a b res i
+            | i > a || i > b = res
+            | aIsDivisible && bIsDivisible = updateResAndGoNext
+            | otherwise = justGoNext
+            where
+                aIsDivisible = mod a i == 0
+                bIsDivisible = mod b i == 0
+                updateResAndGoNext = helper a b i (i + 1)
+                justGoNext = helper a b res (i + 1)
+    in
+        myGCD' x y
+    where
+        modulus :: Int -> Int
+        modulus n = if n >= 0 then n else (n * (-1))
 
 {-
    Problem 33
