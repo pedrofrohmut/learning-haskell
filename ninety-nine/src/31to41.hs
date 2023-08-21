@@ -103,6 +103,8 @@ myGCD val1 val2 =
    True
 -}
 
+myIsComprime :: Int -> Int -> Bool
+myIsComprime a b = (gcd a b) == 1
 
 {-
    Problem 34
