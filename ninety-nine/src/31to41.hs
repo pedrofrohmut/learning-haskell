@@ -166,6 +166,26 @@ myTotientPhi m =
    [3, 3, 5, 7]
 -}
 
+myPrimeFactors :: Int -> [Int]
+myPrimeFactors num =
+    let
+        helper n res i
+            | i > n = res
+            | nIsDivisible = updtNAndRes
+            | otherwise = goNext
+            where
+                nIsDivisible = mod n i == 0
+                updtNAndRes = helper (div n i) (res ++ [i]) i
+                goNext = helper n res (i + 1)
+
+        initRes :: [Int]
+        initRes = []
+
+        initIter :: Int
+        initIter = 2
+    in
+        helper num initRes initIter
+
 
 {-
    Problem 36
