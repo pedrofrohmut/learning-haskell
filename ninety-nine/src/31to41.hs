@@ -127,6 +127,26 @@ myIsComprime a b = (gcd a b) == 1
    4
 -}
 
+myTotientPhi :: Int -> (Int, [Int])
+myTotientPhi m =
+    let
+        helper :: Int -> (Int, [Int]) -> Int -> (Int, [Int])
+        helper m (phi, r) i
+            | i == m = (phi, r)
+            | isComprime = incResGoNext
+            | otherwise = justGoNext
+            where
+                isComprime = (gcd m i) == 1
+                incResGoNext = helper m (phi + 1, r ++ [i]) (i + 1)
+                justGoNext = helper m (phi, r) (i + 1)
+
+        initRes :: (Int, [Int])
+        initRes = (1, [1])
+
+        initIterator :: Int
+        initIterator = 2
+    in
+        helper m initRes initIterator
 
 {-
    Problem 35
