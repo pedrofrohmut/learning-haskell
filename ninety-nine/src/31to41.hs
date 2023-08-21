@@ -206,6 +206,26 @@ myPrimeFactors num =
    [(3,2),(5,1),(7,1)]
 -}
 
+myPrimeFactorsMult :: Int -> [(Int, Int)]
+myPrimeFactorsMult num =
+    let
+        helper :: [(Int, Int)] -> Int -> (Int, Int) -> [Int] -> [(Int, Int)]
+        helper res curr (val, amt) (y:ys)
+            | null ys && curr == y = incTupleAddToRes
+            | null ys && curr /= y = addTupleAndNewTupleToRes
+            | curr == y = incTuple
+            | otherwise = addResNewTuple
+            where
+                incTupleAddToRes = res ++ [(val, amt + 1)]
+                addTupleAndNewTupleToRes = res ++ [(val, amt), (y, 1)]
+                incTuple = helper res curr (val, amt + 1) ys
+                addResNewTuple = helper (res ++ [(val, amt)]) y (y, 1) ys
+
+        initRes = [] :: [(Int, Int)]
+
+        (x:xs) = myPrimeFactors num :: [Int]
+    in
+        helper initRes x (x, 1) xs
 
 {-
    Problem 37
