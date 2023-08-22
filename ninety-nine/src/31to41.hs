@@ -1,3 +1,5 @@
+-- TODO: 38 and 41 part 2
+
 {-
     99 questions/31 to 41
 
