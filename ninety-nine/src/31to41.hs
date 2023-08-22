@@ -210,6 +210,7 @@ myPrimeFactorsMult :: Int -> [(Int, Int)]
 myPrimeFactorsMult num =
     let
         helper :: [(Int, Int)] -> Int -> (Int, Int) -> [Int] -> [(Int, Int)]
+        helper _ curr _ [] = [(curr, 1)]
         helper res curr (val, amt) (y:ys)
             | null ys && curr == y = incTupleAddToRes
             | null ys && curr /= y = addTupleAndNewTupleToRes
@@ -238,6 +239,9 @@ myPrimeFactorsMult num =
    (p3 m3) ...) be the list of prime factors (and their multiplicities) of a
    given number m. Then phi(m) can be calculated with the following formula:
 
+   p1 => Prime factor 1
+   m1 => Multiplicity of prime factor 1
+
    phi(m) = (p1 - 1) * p1 ** (m1 - 1) *
             (p2 - 1) * p2 ** (m2 - 1) *
             (p3 - 1) * p3 ** (m3 - 1) * ...
@@ -245,6 +249,26 @@ myPrimeFactorsMult num =
    Note that a ** b stands for the b'th power of a.
 -}
 
+myTotientPhiImproved :: Floating a => Int -> a
+myTotientPhiImproved num =
+    let
+        primeFactors :: [(Int, Int)]
+        primeFactors = myPrimeFactorsMult num
+
+        helper :: (Integral a, Floating b) => (a, a) -> b
+        helper (p1, m1) =
+            let
+                p = fromIntegral p1
+                m = fromIntegral m1
+            in
+                (p - 1) * (p ** (m - 1))
+
+        iterator [] = []
+        iterator (x:xs) = (helper x) : iterator xs
+
+        resArr = iterator primeFactors
+    in
+        foldr (*) 1 resArr
 
 {-
    Problem 38
