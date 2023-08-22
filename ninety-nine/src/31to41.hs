@@ -273,7 +273,8 @@ myTotientPhiImproved num =
 {-
    Problem 38
 
-   (*) Compare the two methods of calculating Euler's totient function. (no solution required)
+   (*) Compare the two methods of calculating Euler's totient function. (no
+   solution required)
 
    Use the solutions of Problems 34 and 37 to compare the algorithms. Take the
    number of reductions as a measure for efficiency. Try to calculate phi(10090)
@@ -295,6 +296,16 @@ myTotientPhiImproved num =
    [11,13,17,19]
 -}
 
+listPrimes :: Int -> Int -> [Int]
+listPrimes start end =
+    let
+        iterator :: Int -> [Int]
+        iterator i
+            | i == end = []
+            | isPrime i = i : iterator (i + 1)
+            | otherwise = iterator (i + 1)
+    in
+        iterator start
 
 {-
    Problem 40
