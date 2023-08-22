@@ -337,11 +337,10 @@ goldbach num =
         primes = listPrimes 2 num
 
         iterator :: [Int] -> [Int] -> (Int, Int)
-        iterator [] [] = (1, 1)
-        iterator [] (y:ys) = iterator primes ys
+        iterator (_:xs) [] = iterator xs primes
         iterator (x:xs) (y:ys)
             | (x + y) == num = (x, y)
-            | otherwise      = iterator xs (y:ys)
+            | otherwise = iterator (x:xs) ys
     in
         iterator primes primes
 
@@ -380,3 +379,5 @@ goldbach num =
    [(73,919),(61,1321),(67,1789),(61,1867)]
 -}
 
+goldbachList :: Int -> Int -> [(Int, Int)]
+goldbachList start end = map goldbach (filter (\x -> mod x 2 == 0) [start..end])
