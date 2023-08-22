@@ -330,6 +330,20 @@ listPrimes start end =
    (5, 23)
 -}
 
+goldbach :: Int -> (Int, Int)
+goldbach num =
+    let
+        primes :: [Int]
+        primes = listPrimes 2 num
+
+        iterator :: [Int] -> [Int] -> (Int, Int)
+        iterator [] [] = (1, 1)
+        iterator [] (y:ys) = iterator primes ys
+        iterator (x:xs) (y:ys)
+            | (x + y) == num = (x, y)
+            | otherwise      = iterator xs (y:ys)
+    in
+        iterator primes primes
 
 {-
    Problem 41
