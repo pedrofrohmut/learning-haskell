@@ -1,5 +1,3 @@
--- TODO: 38 and 41 part 2
-
 {-
     99 questions/31 to 41
 
@@ -408,4 +406,31 @@ goldbach num =
 -}
 
 goldbachList :: Int -> Int -> [(Int, Int)]
-goldbachList start end = map goldbach (filter (\x -> mod x 2 == 0) [start..end])
+goldbachList start end =
+    map goldbach (filter (\x -> mod x 2 == 0) [start..end])
+
+goldbachWithMin :: Int -> Int -> (Int, Int)
+goldbachWithMin num min
+    | num <= (min + 2) = (0, 0)
+    | otherwise =
+        let
+            primes :: [Int]
+            primes = listPrimes min num
+
+            iterator :: [Int] -> [Int] -> (Int, Int)
+            iterator [] _ = (0, 0)
+            iterator (_:xs) [] = iterator xs primes
+            iterator (x:xs) (y:ys)
+                | (x + y) == num = (x, y)
+                | otherwise = iterator (x:xs) ys
+        in
+            iterator primes primes
+
+goldbachListWithMin :: Int -> Int -> Int -> [(Int, Int)]
+goldbachListWithMin start end min =
+    let
+        evens = filter even [start..end]
+        results = map (\x -> goldbachWithMin x min) evens
+        validSamples = filter (/= (0, 0)) results
+    in
+        validSamples
