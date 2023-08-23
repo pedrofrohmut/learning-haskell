@@ -283,6 +283,32 @@ myTotientPhiImproved num =
    as an example.
 -}
 
+{-
+   Two numbers are coprime if their greatest common divisor equals 1.
+
+   Euler's so-called totient function phi(m) is defined as the number of positive
+   integers r (1 <= r < m) that are coprime to m.
+
+   * rewrite of totientPhi here because the one above has extra stuff to show the
+   list of numbers that can make it slower
+
+    -- To set benchmark mode on in ghci
+    ghci> :set +s
+
+   totientPhi 10090         => 0.02 secs, 9.038.888 bytes
+   totientPhiImproved 10090 => 0.01 secs, 729,368 bytes
+-}
+
+totientPhi :: Int -> Int
+totientPhi m =
+    let
+        _isComprime :: Int -> Int -> Bool
+        _isComprime a b = (gcd a b) == 1
+
+        r :: [Int]
+        r = [1..(m - 1)]
+    in
+        length $ filter (\x -> _isComprime x m) r
 
 {-
    Problem 39
