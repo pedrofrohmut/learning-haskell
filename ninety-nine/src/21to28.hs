@@ -200,6 +200,24 @@ myGenRndPermutation xs =
     make triple loop i, j, k
 -}
 
+-- With a given combination :: [[a]] and a group [a] give all the lists that match
+-- the combinations and members of the group
+-- TODO: not working yet
+giveMeAllUniqueLists :: [[a]] -> [a] -> [[a]]
+giveMeAllUniqueLists combinations group =
+    let
+        iterator res [] [] = res
+        iterator res (_:xs) [] = iterator res xs group
+        iterator res (x:xs) (y:ys) =
+            let
+                newCombination = x ++ [y]
+                updRes = res ++ [newCombination]
+            in
+                iterator updRes (x:xs) ys
+    in
+        iterator [] combinations group
+
+
 myCombinations :: Int -> [a] -> [[a]]
 myCombinations size group =
     let
