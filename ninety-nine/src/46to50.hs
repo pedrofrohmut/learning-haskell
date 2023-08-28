@@ -193,9 +193,9 @@ tableN n f =
         applyF (x:[]) _ = x
         applyF (x:xs) f = x `f` (applyF xs f)
 
-        allLists :: Int -> [[Bool]]
-        allLists 0 = [[]]
-        allLists n = [x:xs | x <- [True, False], xs <- allLists (n - 1)]
+        genLists :: Int -> [[Bool]]
+        genLists 0 = [[]]
+        genLists n = [x:xs | x <- [True, False], xs <- genLists (n - 1)]
 
         printer :: [Bool] -> String -> Bool -> String
         printer [] _ _ = ""
@@ -208,10 +208,8 @@ tableN n f =
         iterator (y:ys) = do
             putStrLn $ printer y "" (applyF y f)
             iterator ys
-
-        lists = allLists n
     in
-        iterator lists
+        iterator (genLists n)
 
 {-
     Problem 49
@@ -238,6 +236,10 @@ tableN n f =
     λ> gray 3
     ["000","001","011","010","110","111","101","100"]
 -}
+
+genList :: Int -> [[Char]]
+genList 0 = [[]]
+genList n = [x:xs | x <- ['0', '1'], xs <- genList (n - 1)]
 
 {-
     Problem 50
