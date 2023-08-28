@@ -4,6 +4,7 @@
     Logic and Codes
 
     Problem 46
+
     (**) Truth tables for logical expressions.
 
     Define predicates and/2, or/2, nand/2, nor/2, xor/2, impl/2 and equ/2 (for
@@ -34,6 +35,35 @@
     False False False
 -}
 
+-- and/2, or/2, nand/2, nor/2, xor/2, impl/2 and equ/2
+
+and' :: Bool -> Bool -> Bool
+and' True True = True
+and' _ _ = False
+
+or' :: Bool -> Bool -> Bool
+or' False False = False
+or' _  _ = True
+
+nand' :: Bool -> Bool -> Bool
+nand' a b = not $ and' a b
+
+nor' :: Bool -> Bool -> Bool
+nor' a b = not $ or' a b
+
+xor' :: Bool -> Bool -> Bool
+xor' True True = False
+xor' False False = False
+xor' _ _ = True
+
+impl' :: Bool -> Bool -> Bool
+impl' True False = False
+impl' _ _ = True
+
+equ' :: Bool -> Bool -> Bool
+equ' True True = True
+equ' False False = True
+equ' _ _ = False
 
 {-
     Problem 47
