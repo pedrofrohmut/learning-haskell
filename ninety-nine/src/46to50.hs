@@ -35,7 +35,72 @@
     False False False
 -}
 
--- and/2, or/2, nand/2, nor/2, xor/2, impl/2 and equ/2
+and'' :: (Bool, Bool) -> Bool
+and'' (True, True) = True
+and'' _ = False
+
+or'' :: (Bool, Bool) -> Bool
+or'' (False, False) = False
+or'' _ = True
+
+nand'' :: (Bool, Bool) -> Bool
+nand'' (a, b) = not $ and'' (a, b)
+
+nor'' :: (Bool, Bool) -> Bool
+nor'' (a, b) = not $ or'' (a, b)
+
+xor'' :: (Bool, Bool) -> Bool
+xor'' (True, True) = False
+xor'' (False, False) = False
+xor'' _ = True
+
+impl'' :: (Bool, Bool) -> Bool
+impl'' (True, False) = False
+impl'' _ = True
+
+equ'' :: (Bool, Bool) -> Bool
+equ'' (True, True) = True
+equ'' (False, False) = True
+equ'' _ = False
+
+table' :: ((Bool, Bool) -> Bool) -> IO ()
+table' func = do
+    print (True, True) (func (True, True))
+    print (True, False) (func (True, False))
+    print (False, True) (func (False, True))
+    print (False, False) (func (False, False))
+    where
+        print :: (Bool, Bool) -> Bool -> IO ()
+        print (a, b) c =
+            -- putStrLn $ show a ++ "\t" ++ show b ++ "\t" ++ show c
+            putStrLn $ "(" ++ show a ++ ",\t" ++ show b ++ ")\t" ++ show c
+
+{-
+    Problem 47
+
+    (*) Truth tables for logical expressions (part 2).
+
+    Continue Problem 46 by defining and/2, or/2, etc as being operators. This
+    allows to write the logical expression in the more natural way, as in the
+    example: A and (A or not B). Define operator precedence as usual; i.e. as in
+    Java.
+
+    Example:
+
+    * (table A B (A and (A or not B)))
+    true true true
+    true fail true
+    fail true fail
+    fail fail fail
+
+    Example in Haskell:
+
+    λ> table2 (\a b -> a `and'` (a `or'` not b))
+    True True True
+    True False True
+    False True False
+    False False False
+-}
 
 and' :: Bool -> Bool -> Bool
 and' True True = True
@@ -73,35 +138,7 @@ table func = do
     print False False (func False False)
     where
         print :: Bool -> Bool -> Bool -> IO ()
-        print a b c = putStrLn $ show a ++ " " ++ show b ++ " " ++ show c
-
-{-
-    Problem 47
-
-    (*) Truth tables for logical expressions (part 2).
-
-    Continue Problem 46 by defining and/2, or/2, etc as being operators. This
-    allows to write the logical expression in the more natural way, as in the
-    example: A and (A or not B). Define operator precedence as usual; i.e. as in
-    Java.
-
-    Example:
-
-    * (table A B (A and (A or not B)))
-    true true true
-    true fail true
-    fail true fail
-    fail fail fail
-
-    Example in Haskell:
-
-    λ> table2 (\a b -> a `and'` (a `or'` not b))
-    True True True
-    True False True
-    False True False
-    False False False
--}
-
+        print a b c = putStrLn $ show a ++ "\t" ++ show b ++ "\t" ++ show c
 
 {-
     Problem 48
