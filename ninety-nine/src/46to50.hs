@@ -65,6 +65,16 @@ equ' True True = True
 equ' False False = True
 equ' _ _ = False
 
+table :: (Bool -> Bool -> Bool) -> IO ()
+table func = do
+    print True True (func True True)
+    print True False (func True False)
+    print False True (func False True)
+    print False False (func False False)
+    where
+        print :: Bool -> Bool -> Bool -> IO ()
+        print a b c = putStrLn $ show a ++ " " ++ show b ++ " " ++ show c
+
 {-
     Problem 47
 
