@@ -186,6 +186,33 @@ table func = do
     False False False False
 -}
 
+tableN :: Int -> (Bool -> Bool -> Bool) -> IO ()
+tableN n f =
+    let
+        applyF :: [Bool] -> (Bool -> Bool -> Bool) -> Bool
+        applyF (x:[]) _ = x
+        applyF (x:xs) f = x `f` (applyF xs f)
+
+        allLists :: Int -> [[Bool]]
+        allLists 0 = [[]]
+        allLists n = [x:xs | x <- [True, False], xs <- allLists (n - 1)]
+
+        printer :: [Bool] -> String -> Bool -> String
+        printer [] _ _ = ""
+        printer (y:[]) out res = "(" ++ out ++ show y ++ ") = " ++ show res
+        printer (y:ys) out res = printer ys (out ++ show y ++ ", ") res
+
+        iterator :: [[Bool]] -> IO ()
+        iterator (y:[]) =
+            putStrLn $ printer y "" (applyF y f)
+        iterator (y:ys) = do
+            putStrLn $ printer y "" (applyF y f)
+            iterator ys
+
+        lists = allLists n
+    in
+        iterator lists
+
 {-
     Problem 49
 
