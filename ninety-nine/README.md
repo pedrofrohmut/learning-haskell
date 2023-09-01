@@ -37,7 +37,7 @@ Link: https://wiki.haskell.org/H-99:_Ninety-Nine_Haskell_Problems
 - [X] 23
 - [X] 24
 - [X] 25
-- [ ] 26
+- [X] 26
 - [ ] 27
 - [ ] 28
 

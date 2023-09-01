@@ -192,53 +192,28 @@ myGenRndPermutation xs =
     ["abc","abd","abe",...]
 -}
 
-{-
-    Smaller for testing
 
-    myCombinations 3 "abc" => ["abc", "acb", "bac", "bca", "cab", "cba"]
-
-    make triple loop i, j, k
--}
-
--- With a given combination :: [[a]] and a group [a] give all the lists that match
--- the combinations and members of the group
--- TODO: not working yet
-giveMeAllUniqueLists :: [[a]] -> [a] -> [[a]]
-giveMeAllUniqueLists combinations group =
+combinations :: Eq a => Int -> [a] -> [[a]]
+combinations 0 _ = []
+combinations num ks =
     let
-        iterator res [] [] = res
-        iterator res (_:xs) [] = iterator res xs group
-        iterator res (x:xs) (y:ys) =
-            let
-                newCombination = x ++ [y]
-                updRes = res ++ [newCombination]
-            in
-                iterator updRes (x:xs) ys
+        genLists :: Eq a => [[a]] -> [a] -> [[a]] -> [a] -> [[a]]
+        genLists res group [] _ = res
+        genLists res group (_:xs) [] = genLists res group xs group
+        genLists res group (x:xs) (y:ys)
+            | any (== y) x = skipNextYs
+            | otherwise = updateResNextYs
+            where
+                updateResNextYs = genLists (res ++ [x ++ [y]]) group (x:xs) ys
+                skipNextYs = genLists res group (x:xs) ys
+
+        iterator :: (Eq a) => [a] -> Int -> [[a]] -> Int -> [[a]]
+        iterator group n result i
+            | i > n = result
+            | i == 1 = iterator group n (map (\arg -> [arg]) group) (i + 1)
+            | otherwise = iterator group n (genLists [] group result group) (i + 1)
     in
-        iterator [] combinations group
-
-
-myCombinations :: Int -> [a] -> [[a]]
-myCombinations size group =
-    let
-        -- makeLists [] = []
-        -- makeLists (x:xs) = [x] : makeLists xs
-
-        -- makeList2 :: [[a]] -> [a] -> [a] -> [a] -> [[a]]
-
-        -- when ys isEmpty all the possible groups were created
-        makeList2 res full [] ys = res
-        -- when xs is empty go to next on ys
-        makeList2 res full (x:xs) [] = makeList2 res full xs full
-        -- otherwise: make groups and next on xs
-        makeList2 res full (x:xs) (y:ys) =
-            let
-                updtRes = res ++ [x:y:[]]
-            in
-                makeList2 updtRes full (x:xs) ys
-
-    in
-        makeList2 [] group group group
+        iterator ks num [] 1
 
 {-
     Problem 27
