@@ -217,6 +217,7 @@ combinations num ks =
 
 {-
     Problem 27
+
     Group the elements of a set into disjoint subsets.
 
     a) In how many ways can a group of 9 people work in 3 disjoint subgroups of
