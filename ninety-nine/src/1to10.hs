@@ -146,6 +146,7 @@ test04 = do
     λ> myReverse [1,2,3,4]
     [4,3,2,1]
 -}
+
 myReverse :: [a] -> [a]
 myReverse list =
     let
@@ -153,6 +154,20 @@ myReverse list =
         reverseIt result (x:xs) = reverseIt (x : result) xs
     in
         reverseIt [] list
+
+myReverse' :: [a] -> [a]
+myReverse' [] = []
+myReverse' (x:xs) = (myReverse' xs) ++ [x]
+
+test05 :: IO ()
+test05 = do
+    let arr = [1,2,3,4,5]
+    if (myReverse arr) /= [5,4,3,2,1]
+        then error "Test 05: myReverse not working"
+        else putStrLn "Test 05: myReverse is working"
+    if (myReverse' arr) /= [5,4,3,2,1]
+        then error "Test 05: myReverse' not working"
+        else putStrLn "Test 05: myReverse' is working"
 
 {-
     Problem 6
