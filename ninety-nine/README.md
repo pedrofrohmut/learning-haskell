@@ -65,7 +65,7 @@ Link: https://wiki.haskell.org/H-99:_Ninety-Nine_Haskell_Problems
 
 ## Binary Trees
 
-- [ ] 54
+- [X] 54
 - [ ] 55
 - [ ] 56
 - [ ] 57

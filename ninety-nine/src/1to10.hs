@@ -17,6 +17,20 @@ myLast (x:xs)
     | null xs = x
     | otherwise = myLast xs
 
+myLast' :: [a] -> a
+myLast' (x:[]) = x
+myLast' (x:xs) = myLast' xs
+
+test01 :: IO ()
+test01 = do
+    let arr = [1,2,3,4,5]
+    if (myLast arr) /= 5
+        then error "Test 01: myLast not working"
+        else putStrLn "Test 01: myLast works"
+    if (myLast' arr) /= 5
+        then error "Test 01: myLast' not working"
+        else putStrLn "Test 01: myLast' works"
+
 {-
     Problem 2
 
@@ -35,6 +49,20 @@ myButLast :: [a] -> a
 myButLast (x1:x2:xs)
     | null xs = x1
     | otherwise = myButLast (x2:xs)
+
+myButLast' :: [a] -> a
+myButLast' (x:_:[]) = x
+myButLast' (_:x:xs) = myButLast' (x:xs)
+
+test02 :: IO ()
+test02 = do
+    let arr = [1,2,3,4,5]
+    if (myButLast arr) /= 4
+        then error "Test 02: myButLast not working"
+        else putStrLn "Test 02: myButLast is working"
+    if (myButLast' arr) /= 4
+        then error "Test 02: myButLast' not working"
+        else putStrLn "Test 02: myButLast' is working"
 
 {-
     Problem 3
