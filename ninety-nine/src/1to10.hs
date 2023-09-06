@@ -86,6 +86,21 @@ elemAt (x:xs) n
     | n == 0 = x
     | otherwise = elemAt xs (n - 1)
 
+elemAt' :: [a] -> Int -> a
+elemAt' (x:xs) 0 = x
+elemAt' (x:xs) n = elemAt' xs (n - 1)
+
+test03 :: IO ()
+test03 = do
+    let arr = [1,2,3,4,5]
+    if (elemAt arr 2) /= 3
+        then error "Test 03: elemAt not working"
+        else putStrLn "Test 03: elemAt working"
+    let arr = [1,2,3,4,5]
+    if (elemAt' arr 2) /= 3
+        then error "Test 03: elemAt' not working"
+        else putStrLn "Test 03: elemAt' working"
+
 {-
     Problem 4
 
