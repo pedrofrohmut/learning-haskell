@@ -121,6 +121,20 @@ myLength list =
     in
         count list 0
 
+myLength' :: [a] -> Int
+myLength' [] = 0
+myLength' (x:xs) = 1 + myLength xs
+
+test04 :: IO ()
+test04 = do
+    let arr = [1,2,3,4,5,6,7,8,9,0]
+    if (myLength arr) /= 10
+        then error "Test 04: myLength is not working"
+        else putStrLn "Test 04: myLength is working"
+    if (myLength' arr) /= 10
+        then error "Test 04: myLength' is not working"
+        else putStrLn "Test 04: myLength' is working"
+
 {-
     Problem 5
     Reverse a list.
